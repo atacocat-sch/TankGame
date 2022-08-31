@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 
 public class TankCursor : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer m_Cursor;
-    [SerializeField] SpriteRenderer m_LoadingCursor;
+    [SerializeField] SpriteRenderer cursor;
+    [SerializeField] SpriteRenderer loadingCursor;
 
     TankGun gun;
 
@@ -27,15 +27,15 @@ public class TankCursor : MonoBehaviour
 
         if (Time.time > gun.NextFireTime)
         {
-            m_Cursor.gameObject.SetActive(true);
-            m_LoadingCursor.gameObject.SetActive(false);
+            cursor.gameObject.SetActive(true);
+            loadingCursor.gameObject.SetActive(false);
         }
         else
         {
-            m_Cursor.gameObject.SetActive(false);
-            m_LoadingCursor.gameObject.SetActive(true);
+            cursor.gameObject.SetActive(false);
+            loadingCursor.gameObject.SetActive(true);
 
-            m_LoadingCursor.sharedMaterial.SetFloat("_Value", 1.0f - (gun.NextFireTime - Time.time) / gun.FireDelay);
+            loadingCursor.sharedMaterial.SetFloat("_Value", 1.0f - (gun.NextFireTime - Time.time) / gun.FireDelay);
         }
     }
 

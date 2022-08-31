@@ -19,8 +19,8 @@ public class TankMovement : MonoBehaviour
     [SerializeField] float turretMaxSpeed;
     [SerializeField] float turretSmoothTime;
 
-    float leftTrackInput;
-    float rightTrackInput;
+    float throttleInput;
+    float turnInput;
     Vector2 shootPoint;
 
     float leftTrackSpeed;
@@ -59,6 +59,9 @@ public class TankMovement : MonoBehaviour
     {
         RotateTurret();
 
+        float leftTrackInput = Mathf.Clamp(throttleInput + turnInput, -1.0f, 1.0f);
+        float rightTrackInput = Mathf.Clamp(throttleInput - turnInput, -1.0f, 1.0f);
+
         UpdateTrack(leftTrack, leftTrackInput, ref leftTrackSpeed, ref leftTrackSpeedVelocity);
         UpdateTrack(rightTrack, rightTrackInput, ref rightTrackSpeed, ref rightTrackSpeedVelocity);
     }
@@ -86,11 +89,11 @@ public class TankMovement : MonoBehaviour
     {
         switch (callbackContext.action.name)
         {
-            case "Left Track":
-                leftTrackInput = callbackContext.ReadValue<float>();
+            case "Throttle":
+                throttleInput = callbackContext.ReadValue<float>();
                 break;
-            case "Right Track":
-                rightTrackInput = callbackContext.ReadValue<float>();
+            case "Turning":
+                turnInput = callbackContext.ReadValue<float>();
                 break;
             case "Shoot Point":
                 shootPoint = callbackContext.ReadValue<Vector2>();

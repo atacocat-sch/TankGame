@@ -217,6 +217,9 @@ MonoBehaviour:
   damage: 10
   startSpeed: 5
   projectileSize: 0.1875
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 191
   range: Infinity
   scaleCurve:
     serializedVersion: 2

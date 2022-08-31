@@ -6,7 +6,7 @@
             "id": "26bfdf65-8e31-42b4-bd29-c55d18ea735d",
             "actions": [
                 {
-                    "name": "Left Track",
+                    "name": "Throttle",
                     "type": "Value",
                     "id": "527f26aa-8655-4b11-9805-8eb34ebf876a",
                     "expectedControlType": "Axis",
@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Right Track",
+                    "name": "Turning",
                     "type": "Value",
                     "id": "b5acac9f-79f8-4f08-b6cf-15e173fb5e98",
                     "expectedControlType": "Axis",
@@ -46,29 +46,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left Track",
+                    "action": "Throttle",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "negative",
                     "id": "8bb6a48f-c704-4af8-8ce6-11d78732c304",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left Track",
+                    "action": "Throttle",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "positive",
                     "id": "06889c95-2f84-4dfb-b189-1e0f259c17aa",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left Track",
+                    "action": "Throttle",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -79,29 +79,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Right Track",
+                    "action": "Turning",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "negative",
                     "id": "fd886604-9294-4c4e-a28a-a3eea5513bcc",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Right Track",
+                    "action": "Turning",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "positive",
                     "id": "8e02f4f2-d11f-4687-94ca-0b6bd7da4c5b",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Right Track",
+                    "action": "Turning",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },

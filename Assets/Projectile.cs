@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float damage;
     [SerializeField] float startSpeed;
     [SerializeField] float projectileSize;
+    [SerializeField] LayerMask collisionMask;
     [SerializeField] float range;
     [SerializeField] AnimationCurve scaleCurve;
 
@@ -31,9 +32,14 @@ public class Projectile : MonoBehaviour
     private void FixedUpdate()
     {
         float speed = rigidbody.velocity.magnitude;
-        RaycastHit2D hit = Physics2D.CircleCast(rigidbody.position, projectileSize, rigidbody.velocity, speed * Time.deltaTime + 0.01f);
+        RaycastHit2D hit = Physics2D.CircleCast(rigidbody.position, projectileSize, rigidbody.velocity, speed * Time.deltaTime + 0.01f, collisionMask);
         if (hit)
         {
+            if (hit.transform.TryGetComponent(out Health health))
+            {
+                health.Damage(new DamageArgs(transform.root.gameObject, damage));
+            }
+
             if (impactFX)
             {
                 impactFX.SetActive(true);
