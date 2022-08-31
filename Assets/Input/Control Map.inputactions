@@ -118,6 +118,17 @@
                 },
                 {
                     "name": "",
+                    "id": "6cbf4426-9609-4422-a04c-1feee398a517",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "64673ec5-c9be-4133-8207-4746861cd4e1",
                     "path": "<Mouse>/position",
                     "interactions": "",

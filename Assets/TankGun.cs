@@ -1,20 +1,24 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class TankGun : MonoBehaviour
 {
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform muzzle;
-    [SerializeField] bool loaded;
-    [SerializeField] bool locked;
+    [SerializeField] float fireDelay;
+
+    [Space]
+    [SerializeField] UnityEvent shootEventEditor;
 
     PlayerInput inputComponent;
+    float nextFireTime;
 
     public event System.Action OnShootEvent;
 
-    public bool Locked { get => locked; set => locked = value; }
-    public bool Loaded { get => loaded; set => loaded = value; }
+    public float FireDelay => fireDelay;
+    public float NextFireTime => nextFireTime;
 
     private void OnEnable()
     {
@@ -37,7 +41,7 @@ public class TankGun : MonoBehaviour
         switch (callbackContext.action.name)
         {
             case "Shoot":
-                Shoot();
+                if (callbackContext.ReadValue<float>() > 0.1f) Shoot();
                 break;
             default:
                 break;
@@ -46,12 +50,13 @@ public class TankGun : MonoBehaviour
 
     private void Shoot()
     {
-        if (!locked || !loaded) return;
+        if (Time.time < nextFireTime) return;
 
         Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
 
-        loaded = false;
+        nextFireTime = Time.time + fireDelay;
 
         OnShootEvent?.Invoke();
+        shootEventEditor?.Invoke();
     }
 }

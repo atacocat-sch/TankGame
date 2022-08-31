@@ -16,8 +16,9 @@ public class Projectile : MonoBehaviour
 
     [Space]
     [SerializeField] GameObject landFX;
+    [SerializeField] GameObject impactFX;
 
-    float distanceTraveled;
+    float age;
     new Rigidbody2D rigidbody;
 
     private void Awake()
@@ -33,11 +34,16 @@ public class Projectile : MonoBehaviour
         RaycastHit2D hit = Physics2D.CircleCast(rigidbody.position, projectileSize, rigidbody.velocity, speed * Time.deltaTime + 0.01f);
         if (hit)
         {
+            if (impactFX)
+            {
+                impactFX.SetActive(true);
+                impactFX.transform.SetParent(null);
+            }
             Destroy(gameObject);
         }
 
-        distanceTraveled += speed * Time.deltaTime;
-        if (distanceTraveled > range)
+        age += Time.deltaTime;
+        if (age > range / startSpeed)
         {
             if (landFX)
             {
@@ -48,8 +54,8 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            transform.localScale = Vector3.one * scaleCurve.Evaluate(distanceTraveled / range);
-            shadow.Offset = Vector2.down * shadowDistance.Evaluate(distanceTraveled / range);
+            transform.localScale = Vector3.one * scaleCurve.Evaluate(age / range);
+            shadow.Offset = Vector2.down * shadowDistance.Evaluate(age / range);
         }
     }
 }

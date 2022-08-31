@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  startSpeed: 25
+  startSpeed: 5
   projectileSize: 0.1875
   range: Infinity
   scaleCurve:
@@ -268,3 +268,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   landFX: {fileID: 0}
+  impactFX: {fileID: 0}
