@@ -1,25 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [SelectionBase]
 [DisallowMultipleComponent]
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(TankMovement))]
-[RequireComponent(typeof(TankGun))]
 public class InputController : MonoBehaviour
 {
+    [SerializeField] UnityEvent<float>[] shootEvents;
+
     PlayerInput inputComponent;
     TankMovement movement;
-    TankGun gun;
 
     Vector2 shootPoint;
 
     private void Awake()
     {
         movement = GetComponent<TankMovement>();
-        gun = GetComponent<TankGun>();
     }
 
     private void OnEnable()
@@ -56,8 +56,11 @@ public class InputController : MonoBehaviour
             case "Shoot Point":
                 shootPoint = callbackContext.ReadValue<Vector2>();
                 break;
-            case "Shoot":
-                gun.Shoot();
+            case "Shoot 1":
+                if (shootEvents.Length > 0) shootEvents[0].Invoke(callbackContext.ReadValue<float>());
+                break;
+            case "Shoot 2":
+                if (shootEvents.Length > 1) shootEvents[1].Invoke(callbackContext.ReadValue<float>());
                 break;
             default:
                 break;

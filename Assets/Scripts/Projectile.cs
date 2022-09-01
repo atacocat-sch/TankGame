@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
         {
             if (hit.transform.TryGetComponent(out Health health))
             {
-                health.Damage(new DamageArgs(transform.root.gameObject, damage));
+                if (damage > 0.001f) health.Damage(new DamageArgs(transform.root.gameObject, damage));
             }
 
             if (impactFX)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -8,20 +9,23 @@ public class TankGun : MonoBehaviour
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform muzzle;
     [SerializeField] float fireDelay;
+    [SerializeField] bool fullAuto;
 
     [Space]
     [SerializeField] UnityEvent shootEventEditor;
 
     float nextFireTime;
+    bool triggerState;
 
     public event System.Action OnShootEvent;
 
     public float FireDelay => fireDelay;
     public float NextFireTime => nextFireTime;
 
-    public void Shoot()
+    private void Update()
     {
         if (Time.time < nextFireTime) return;
+        if (!triggerState) return;
 
         Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
 
@@ -29,5 +33,12 @@ public class TankGun : MonoBehaviour
 
         OnShootEvent?.Invoke();
         shootEventEditor?.Invoke();
+
+        if (!fullAuto) triggerState = false;
+    }
+
+    public void Shoot(float inputValue)
+    {
+        triggerState = inputValue > 0.5f;
     }
 }

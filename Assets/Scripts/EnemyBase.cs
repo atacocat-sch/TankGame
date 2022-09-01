@@ -1,110 +1,86 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class EnemyBase : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
-    [SerializeField] float acceleration;
+    [SerializeField] float spawnWeight = 1.0f;
+    [SerializeField] float minSpawnTime = 3.0f;
 
     [Space]
-    [SerializeField] EnemyBehaviour[] behaviours;
+    [SerializeField] float angleScale = 0.05f;  
+    [SerializeField] UnityEvent[] attackEvents;
 
-    [Space]
-    [SerializeField] UnityEvent attackEvent;
-    [SerializeField] Transform facingContainer;
-
-    protected new Rigidbody2D rigidbody;
-
-    private int behaviourIndex;
-    private float clock = 0.0f;
+    protected TankMovement movement;
 
     private GameObject _Target;
 
-    public GameObject Target 
-    { 
-        get
+    public float SpawnWeight => spawnWeight;
+    public float MinSpawnTime => minSpawnTime;
+    public Vector2 ShootPoint { get => movement.ShootPoint; set => movement.ShootPoint = value; }
+
+    public GameObject Target
+    {
+        get 
         {
             if (!_Target)
             {
-                _Target = FindObjectOfType<TankMovement>().gameObject;
+                _Target = GameObject.FindGameObjectWithTag("Player");
             }
             return _Target;
         }
-        set => _Target = value; 
+        set => _Target = value;
     }
 
-    public Vector2 MoveDirection { get; set; }
+    public static HashSet<EnemyBase> Enemies { get; } = new HashSet<EnemyBase>();
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        movement = GetComponent<TankMovement>();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        MoveDirection = Vector2.zero;
-
-        Behave();
-
-        ApplyMovement();
-
-        clock += Time.deltaTime;
+        Enemies.Add(this);
     }
 
-    protected virtual void ApplyMovement()
+    private void OnDisable()
     {
-        Vector2 target = MoveDirection.normalized * moveSpeed;
-        Vector2 current = rigidbody.velocity;
-
-        Vector2 force = Vector2.ClampMagnitude(target - current, moveSpeed) * acceleration;
-        rigidbody.velocity += force * Time.deltaTime;
-
-
-        facingContainer.right = MoveDirection;
+        Enemies.Remove(this);
     }
 
-    protected virtual void Behave()
+    protected virtual void Update ()
     {
-        if (clock > behaviours[behaviourIndex].duration)
+        if (Target)
         {
-            clock = 0.0f;
-            behaviourIndex = (behaviourIndex + 1) % behaviours.Length;
-
-            switch (behaviours[behaviourIndex].type)
-            {
-                case EnemyBehaviour.BehaviourType.Attack:
-                    attackEvent?.Invoke();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        switch (behaviours[behaviourIndex].type)
-        {
-            case EnemyBehaviour.BehaviourType.Move:
-                MoveDirection = Target ? (Target.transform.position - transform.position) : Vector3.zero;
-                break;
-            default:
-                break;
+            ShootPoint = Target.transform.position;
         }
     }
 
-    [System.Serializable]
-    public class EnemyBehaviour
+    public void Attack (int index)
     {
-        public enum BehaviourType
-        {
-            Wait,
-            Move,
-            Attack
-        }
+        if (index < 0 || index >= attackEvents.Length) return;
 
-        public BehaviourType type;
-        public float duration;
+        attackEvents[index].Invoke();
     }
 
+    public void MoveTowards (Vector2 point)
+    {
+        MoveInDirection(point - (Vector2)transform.position);
+
+    }
+
+    public void MoveInDirection (Vector2 direction)
+    {
+        direction.Normalize();
+
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float currentAngle = movement.transform.eulerAngles.z;
+        float deltaAngle = Mathf.DeltaAngle(targetAngle, currentAngle);
+
+        float dot = Vector2.Dot(direction, movement.transform.right);
+
+        movement.ThrottleInput = dot;
+        movement.TurnInput = Mathf.Clamp(deltaAngle * angleScale, -1.0f, 1.0f);
+    }
 }

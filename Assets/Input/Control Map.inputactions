@@ -30,9 +30,17 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Shoot",
+                    "name": "Shoot 1",
                     "type": "Button",
                     "id": "4b794661-0b75-446d-b544-35801914583c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Shoot 2",
+                    "type": "Button",
+                    "id": "a156c872-4af1-4017-b586-4c089250c52b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -112,7 +120,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
+                    "action": "Shoot 1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -123,7 +131,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
+                    "action": "Shoot 1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -135,6 +143,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shoot Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d69a69ea-d65f-403a-9746-9fe39155510b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
