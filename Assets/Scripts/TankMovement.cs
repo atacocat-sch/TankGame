@@ -19,9 +19,9 @@ public class TankMovement : MonoBehaviour
     [SerializeField] float turretMaxSpeed;
     [SerializeField] float turretSmoothTime;
 
-    float throttleInput;
-    float turnInput;
-    Vector2 shootPoint;
+    public float ThrottleInput { get; set; }
+    public float TurnInput { get; set; }
+    public Vector2 ShootPoint { get; set; }
 
     float leftTrackSpeed;
     float rightTrackSpeed;
@@ -32,35 +32,18 @@ public class TankMovement : MonoBehaviour
     float turretRotationVelocity;
 
     new Rigidbody2D rigidbody;
-    PlayerInput inputComponent;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void OnEnable()
-    {
-        if (TryGetComponent(out inputComponent))
-        {
-            inputComponent.onActionTriggered += OnActionTriggered;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (inputComponent)
-        {
-            inputComponent.onActionTriggered -= OnActionTriggered;
-        }
-    }
-
     private void FixedUpdate()
     {
         RotateTurret();
 
-        float leftTrackInput = Mathf.Clamp(throttleInput + turnInput, -1.0f, 1.0f);
-        float rightTrackInput = Mathf.Clamp(throttleInput - turnInput, -1.0f, 1.0f);
+        float leftTrackInput = Mathf.Clamp(ThrottleInput + TurnInput, -1.0f, 1.0f);
+        float rightTrackInput = Mathf.Clamp(ThrottleInput - TurnInput, -1.0f, 1.0f);
 
         UpdateTrack(leftTrack, leftTrackInput, ref leftTrackSpeed, ref leftTrackSpeedVelocity);
         UpdateTrack(rightTrack, rightTrackInput, ref rightTrackSpeed, ref rightTrackSpeedVelocity);
@@ -68,8 +51,8 @@ public class TankMovement : MonoBehaviour
 
     private void RotateTurret()
     {
-        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(shootPoint) - turret.position;
-        float targetRotation = Mathf.Atan2(worldPoint.y, worldPoint.x) * Mathf.Rad2Deg;
+        Vector2 direction = ShootPoint - (Vector2)turret.position;
+        float targetRotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         turretRotation = Mathf.SmoothDampAngle(turretRotation, targetRotation, ref turretRotationVelocity, turretSmoothTime, turretMaxSpeed);
         turret.rotation = Quaternion.Euler(0.0f, 0.0f, turretRotation);
@@ -83,23 +66,5 @@ public class TankMovement : MonoBehaviour
         Vector2 target = track.right * speed;
         Vector2 force = (target - current) * trackFriction;
         rigidbody.AddForceAtPosition(force, track.position);
-    }
-
-    private void OnActionTriggered(InputAction.CallbackContext callbackContext)
-    {
-        switch (callbackContext.action.name)
-        {
-            case "Throttle":
-                throttleInput = callbackContext.ReadValue<float>();
-                break;
-            case "Turning":
-                turnInput = callbackContext.ReadValue<float>();
-                break;
-            case "Shoot Point":
-                shootPoint = callbackContext.ReadValue<Vector2>();
-                break;
-            default:
-                break;
-        }
     }
 }
