@@ -41,6 +41,11 @@ public class Health : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+
+    public void Regen (DamageArgs args)
+    {
+        currentHealth = Mathf.Min(currentHealth + args.damage, MaxHealth);
+    }
 }
 
 public struct DamageArgs

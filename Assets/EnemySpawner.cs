@@ -8,17 +8,19 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] List<EnemyBase> enemies;
     [SerializeField] float spawnRange;
     [SerializeField] float spawnCheckRange;
+    [SerializeField] int maxEnemies;
 
     [Space]
     [SerializeField] float spawnA;
     [SerializeField] float spawnB;
+    [SerializeField] float spawnC;
 
     float gameDuration;
     float nextSpawnTime;
 
     bool killedDummyTanks = false;
 
-    public float SpawnDelay => Mathf.Exp(spawnB - gameDuration / spawnA) + 3.0f;
+    public float SpawnDelay => Mathf.Exp(spawnB - gameDuration / spawnA) + spawnC;
 
     private void Update()
     {
@@ -38,8 +40,11 @@ public class EnemySpawner : MonoBehaviour
 
             if (enemy != null)
             {
-                Spawner spawnerInstance = Instantiate(spawnerPrefab, spawnLocation, Quaternion.identity);
-                spawnerInstance.spawnObject = enemy.gameObject;
+                if (EnemyBase.Enemies.Count < maxEnemies)
+                {
+                    Spawner spawnerInstance = Instantiate(spawnerPrefab, spawnLocation, Quaternion.identity);
+                    spawnerInstance.spawnObject = enemy.gameObject;
+                }
 
                 nextSpawnTime = Time.time + SpawnDelay;
             }

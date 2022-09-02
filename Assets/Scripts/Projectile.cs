@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour
 
     float age;
     new Rigidbody2D rigidbody;
+    Vector2 previousPosition;
 
     private void Awake()
     {
@@ -29,10 +30,19 @@ public class Projectile : MonoBehaviour
         rigidbody.velocity = transform.right * startSpeed;
     }
 
+    private void Start()
+    {
+        previousPosition = rigidbody.position;
+    }
+
     private void FixedUpdate()
     {
-        float speed = rigidbody.velocity.magnitude;
-        RaycastHit2D hit = Physics2D.CircleCast(rigidbody.position, projectileSize, rigidbody.velocity, speed * Time.deltaTime + 0.01f, collisionMask);
+        Vector2 point = previousPosition;
+        Vector2 vector = rigidbody.position + rigidbody.velocity * Time.deltaTime - previousPosition;
+        float distance = vector.magnitude;
+        Vector2 direction = vector / distance;
+
+        RaycastHit2D hit = Physics2D.CircleCast(point, projectileSize, direction, distance + 0.1f, collisionMask);
         if (hit)
         {
             if (hit.transform.TryGetComponent(out Health health))
@@ -60,8 +70,10 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            transform.localScale = Vector3.one * scaleCurve.Evaluate(age / range);
-            shadow.Offset = Vector2.down * shadowDistance.Evaluate(age / range);
+            transform.localScale = Vector3.one * scaleCurve.Evaluate(startSpeed * age / range);
+            shadow.Offset = Vector2.down * shadowDistance.Evaluate(startSpeed * age / range);
         }
+
+        previousPosition = rigidbody.position;
     }
 }

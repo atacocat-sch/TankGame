@@ -8,7 +8,8 @@ public class LaserGun : MonoBehaviour
     [SerializeField] float aimTime;
     [SerializeField] float fireTime;
     [SerializeField] float windDown;
-    [SerializeField] int damage;
+    [SerializeField] float tickDamage;
+    [SerializeField] float tickFrequency;
 
     [Space]
     [SerializeField] AnimationCurve aimLineAngle;
@@ -19,6 +20,7 @@ public class LaserGun : MonoBehaviour
     [SerializeField] GameObject hitFX;
 
     bool firing = false;
+    float nextTickTime;
 
     private void Start()
     {
@@ -62,7 +64,6 @@ public class LaserGun : MonoBehaviour
 
         laser.gameObject.SetActive(true);
 
-        HashSet<Health> damaged = new HashSet<Health>();
         percent = 0.0f;
         while (percent < 1.0f)
         {
@@ -72,11 +73,11 @@ public class LaserGun : MonoBehaviour
             {
                 if (hit.transform.TryGetComponent(out Health health))
                 {
-                    if (!damaged.Contains(health))
+                    if (Time.time > nextTickTime)
                     {
-                        health.Damage(new DamageArgs(transform.root.gameObject, damage));
+                        health.Damage(new DamageArgs(transform.root.gameObject, tickDamage));
 
-                        damaged.Add(health);
+                        nextTickTime = Time.time + 1.0f / tickFrequency;
                     }
                 }
 

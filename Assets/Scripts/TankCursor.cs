@@ -12,6 +12,11 @@ public class TankCursor : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        Cursor.visible = !focus;
+    }
+
     private void LateUpdate()
     {
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());

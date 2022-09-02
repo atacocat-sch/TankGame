@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class TankGun : MonoBehaviour
+public class TankGun : MonoBehaviour, IAttack
 {
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform muzzle;
@@ -21,6 +21,7 @@ public class TankGun : MonoBehaviour
 
     public float FireDelay => fireDelay;
     public float NextFireTime => nextFireTime;
+    public float Cooldown => 1.0f - Mathf.Clamp01((nextFireTime - Time.time) / fireDelay);
 
     private void Update()
     {

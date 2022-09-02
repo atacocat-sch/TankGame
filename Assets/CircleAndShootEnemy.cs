@@ -7,6 +7,7 @@ public class CircleAndShootEnemy : EnemyBase
     [SerializeField] float circleRadius;
     [SerializeField] float attackRadius;
     [SerializeField] float angleOffset;
+    [SerializeField] float attackAngle;
     [SerializeField] int circleAttackIndex;
 
     protected override void Update()
@@ -27,7 +28,11 @@ public class CircleAndShootEnemy : EnemyBase
 
             if (distToTarget < attackRadius)
             {
-                Attack(circleAttackIndex);
+                float dot = Vector2.Dot(direction, MuzzleDirection);
+                if (Mathf.Acos(dot) * Mathf.Rad2Deg < attackAngle)
+                {
+                    Attack(circleAttackIndex);
+                }
             }
         }
     }
