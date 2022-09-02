@@ -5,7 +5,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class SpriteShadow : MonoBehaviour
 {
-    [SerializeField] Vector2 offset;
+    public Vector2 offset;
 
     public Vector2 Offset { get => offset; set => offset = value; }
 

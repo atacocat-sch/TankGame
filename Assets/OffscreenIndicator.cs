@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class OffscreenIndicator : MonoBehaviour
 {
-    [SerializeField] float cameraRectShrinkage;
-    [SerializeField] float scaleSmoothTime;
+    public float cameraRectShrinkage;
+    public float scaleSmoothTime;
 
     float scalePercent;
     float scaleVelocity;

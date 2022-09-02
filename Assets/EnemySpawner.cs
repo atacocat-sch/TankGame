@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] Spawner spawnerPrefab;
-    [SerializeField] List<EnemyBase> enemies;
-    [SerializeField] float spawnRange;
-    [SerializeField] float spawnCheckRange;
-    [SerializeField] int maxEnemies;
+    public Spawner spawnerPrefab;
+    public List<EnemyBase> enemies;
+    public float spawnRange;
+    public float spawnCheckRange;
+    public int maxEnemies;
 
     [Space]
-    [SerializeField] float spawnA;
-    [SerializeField] float spawnB;
-    [SerializeField] float spawnC;
+    public float spawnA;
+    public float spawnB;
+    public float spawnC;
 
     float gameDuration;
     float nextSpawnTime;

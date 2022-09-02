@@ -4,21 +4,21 @@ using UnityEngine.Events;
 
 public class EnemyBase : MonoBehaviour
 {
-    [SerializeField] float spawnWeight = 1.0f;
-    [SerializeField] float minSpawnTime = 3.0f;
+    public float spawnWeight = 1.0f;
+    public float minSpawnTime = 3.0f;
 
     [Space]
-    [SerializeField] float obstacleAvoidanceDistance;
-    [SerializeField] LayerMask obstacleAvoidanceMask;
-    [SerializeField] float obstacleAvoidanceTime;
+    public float obstacleAvoidanceDistance;
+    public LayerMask obstacleAvoidanceMask;
+    public float obstacleAvoidanceTime;
 
     [Space]
-    [SerializeField] float angleScale = 0.05f;
-    [SerializeField] UnityEvent[] attackEvents;
+    public float angleScale = 0.05f;
+    public UnityEvent[] attackEvents;
 
     [Space]
-    [SerializeField] Transform muzzle;
-    [SerializeField] Transform targetPoint;
+    public Transform muzzle;
+    public Transform targetPoint;
 
     protected TankMovement movement;
     float movementOverrideTime;

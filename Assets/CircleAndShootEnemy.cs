@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CircleAndShootEnemy : EnemyBase
 {
-    [SerializeField] float circleRadius;
-    [SerializeField] float attackRadius;
-    [SerializeField] float angleOffset;
-    [SerializeField] float attackAngle;
-    [SerializeField] int circleAttackIndex;
+    public float circleRadius;
+    public float attackRadius;
+    public float angleOffset;
+    public float attackAngle;
+    public int circleAttackIndex;
 
     protected override void Update()
     {

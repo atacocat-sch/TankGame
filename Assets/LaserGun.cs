@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class LaserGun : MonoBehaviour
 {
-    [SerializeField] float aimTime;
-    [SerializeField] float fireTime;
-    [SerializeField] float windDown;
-    [SerializeField] float tickDamage;
-    [SerializeField] float tickFrequency;
+    public float aimTime;
+    public float fireTime;
+    public float windDown;
+    public float tickDamage;
+    public float tickFrequency;
 
     [Space]
-    [SerializeField] AnimationCurve aimLineAngle;
-    [SerializeField] LineRenderer leftLine;
-    [SerializeField] LineRenderer rightLine;
-    [SerializeField] LineRenderer laser;
-    [SerializeField] ParticleSystem[] fireFX;
-    [SerializeField] GameObject hitFX;
+    public AnimationCurve aimLineAngle;
+    public LineRenderer leftLine;
+    public LineRenderer rightLine;
+    public LineRenderer laser;
+    public ParticleSystem[] fireFX;
+    public GameObject hitFX;
 
     bool firing = false;
     float nextTickTime;

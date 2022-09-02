@@ -6,18 +6,18 @@ using UnityEngine.InputSystem;
 
 public class TankMovement : MonoBehaviour
 {
-    [SerializeField] Transform leftTrack;
-    [SerializeField] Transform rightTrack;
-    [SerializeField] Transform turret;
+    public Transform leftTrack;
+    public Transform rightTrack;
+    public Transform turret;
 
     [Space]
-    [SerializeField] float maxTrackForce;
-    [SerializeField] float trackSpeedSmoothing;
-    [SerializeField] float trackFriction;
+    public float maxTrackForce;
+    public float trackSpeedSmoothing;
+    public float trackFriction;
 
     [Space]
-    [SerializeField] float turretMaxSpeed;
-    [SerializeField] float turretSmoothTime;
+    public float turretMaxSpeed;
+    public float turretSmoothTime;
 
     public float ThrottleInput { get; set; }
     public float TurnInput { get; set; }

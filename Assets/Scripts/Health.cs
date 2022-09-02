@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] float currentHealth;
-    [SerializeField] float maxHealth;
+    public float currentHealth;
+    public float maxHealth;
 
     [Space]
-    [SerializeField] Transform[] detachOnDeath;
+    public Transform[] detachOnDeath;
 
     [Space]
-    [SerializeField] GameObject damagePrefab;
-    [SerializeField] GameObject deathPrefab;
+    public GameObject damagePrefab;
+    public GameObject deathPrefab;
 
     public float CurrentHeath => currentHealth;
     public float MaxHealth => maxHealth;
@@ -32,11 +32,24 @@ public class Health : MonoBehaviour
 
     public void Die(DamageArgs args)
     {
-        if (deathPrefab) Instantiate(deathPrefab, transform.position, Quaternion.identity);
+        Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+
+        if (deathPrefab)
+        {
+            GameObject deathInstance = Instantiate(deathPrefab, transform.position, Quaternion.identity);
+            if (rigidbody && deathInstance.TryGetComponent(out Rigidbody2D diRigidbody))
+            {
+                diRigidbody.velocity = rigidbody.velocity;
+            }
+        }
 
         foreach (var detach in detachOnDeath)
         {
             detach.SetParent(null);
+            if (rigidbody && detach.TryGetComponent(out Rigidbody2D detachRigidbody))
+            {
+                detachRigidbody.velocity = rigidbody.velocity;
+            }
         }
 
         gameObject.SetActive(false);

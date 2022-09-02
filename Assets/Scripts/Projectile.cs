@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] float damage;
-    [SerializeField] float startSpeed;
-    [SerializeField] float projectileSize;
-    [SerializeField] LayerMask collisionMask;
-    [SerializeField] float range;
-    [SerializeField] AnimationCurve scaleCurve;
+    public float damage;
+    public float hitForce;
+    public float startSpeed;
+    public float projectileSize;
+    public LayerMask collisionMask;
+    public float range;
+    public AnimationCurve scaleCurve;
 
     [Space]
-    [SerializeField] SpriteShadow shadow;
-    [SerializeField] AnimationCurve shadowDistance;
+    public SpriteShadow shadow;
+    public AnimationCurve shadowDistance;
 
     [Space]
-    [SerializeField] GameObject landFX;
-    [SerializeField] GameObject impactFX;
+    public GameObject landFX;
+    public GameObject impactFX;
 
     float age;
     new Rigidbody2D rigidbody;
@@ -48,6 +49,11 @@ public class Projectile : MonoBehaviour
             if (hit.transform.TryGetComponent(out Health health))
             {
                 if (damage > 0.001f) health.Damage(new DamageArgs(transform.root.gameObject, damage));
+            }
+
+            if (hit.rigidbody)
+            {
+                hit.rigidbody.velocity += direction * hitForce;
             }
 
             if (impactFX)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RegenCrate : Crate
 {
-    [SerializeField] float regenAmount;
+    public float regenAmount;
 
     protected override bool TryApplyEffect(GameObject target)
     {

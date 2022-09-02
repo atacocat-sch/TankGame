@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class Healthbar : MonoBehaviour
 {
-    [SerializeField] Health target;
-    [SerializeField] Image fill;
-    [SerializeField] Image smoothedFill;
-    [SerializeField] TMPro.TMP_Text healthText;
-    [SerializeField] float smoothTime;
+    public Health target;
+    public Image fill;
+    public Image smoothedFill;
+    public TMPro.TMP_Text healthText;
+    public float smoothTime;
 
     float velocity;
 

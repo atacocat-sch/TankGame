@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 
 public class TankGun : MonoBehaviour, IAttack
 {
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] Transform muzzle;
-    [SerializeField] float fireDelay;
-    [SerializeField] bool fullAuto;
+    public GameObject projectilePrefab;
+    public Transform muzzle;
+    public float fireDelay;
+    public bool fullAuto;
 
     [Space]
-    [SerializeField] UnityEvent shootEventEditor;
+    public UnityEvent shootEventEditor;
 
     float nextFireTime;
     bool triggerState;

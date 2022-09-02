@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CrosshairWeaponIndicator : MonoBehaviour
 {
-    [SerializeField] GameObject target;
-    [SerializeField] GameObject rendererObject;
+    public GameObject target;
+    public GameObject rendererObject;
 
     private void Update()
     {

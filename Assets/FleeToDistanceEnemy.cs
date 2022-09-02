@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class FleeToDistanceEnemy : EnemyBase
 {
-    [SerializeField] float fleeDistance;
-    [SerializeField] float attackDistance;
-    [SerializeField] int attackIndex;
+    public float fleeDistance;
+    public float attackDistance;
+    public int attackIndex;
 
     bool fleeing = false;
 

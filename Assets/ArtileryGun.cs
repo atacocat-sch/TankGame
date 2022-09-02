@@ -5,10 +5,10 @@ using UnityEngine.Events;
 
 public class ArtileryGun : MonoBehaviour, IAttack
 {
-    [SerializeField] GameObject explosionPrefab;
-    [SerializeField] float fireDelay;
-    [SerializeField] Transform targetPoint;
-    [SerializeField] UnityEvent fireEvent;
+    public GameObject explosionPrefab;
+    public float fireDelay;
+    public Transform targetPoint;
+    public UnityEvent fireEvent;
 
     float lastFireTime;
 

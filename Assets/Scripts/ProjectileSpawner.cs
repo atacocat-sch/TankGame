@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 public class ProjectileSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] Transform muzzle;
-    [SerializeField] UnityEvent fireEvent;
+    public GameObject projectilePrefab;
+    public Transform muzzle;
+    public UnityEvent fireEvent;
 
     public void Shoot ()
     {

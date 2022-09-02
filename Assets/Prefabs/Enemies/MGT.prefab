@@ -23,14 +23,6 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.39613748
       objectReference: {fileID: 0}
-    - target: {fileID: 8348006080250415251, guid: 40548a22bbc7f654cbdae15030f97601, type: 3}
-      propertyPath: maxHealth
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 8348006080250415251, guid: 40548a22bbc7f654cbdae15030f97601, type: 3}
-      propertyPath: currentHealth
-      value: 80
-      objectReference: {fileID: 0}
     - target: {fileID: 8348006080250415252, guid: 40548a22bbc7f654cbdae15030f97601, type: 3}
       propertyPath: m_RootOrder
       value: 0

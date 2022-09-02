@@ -19591,7 +19591,7 @@ GameObject:
   - component: {fileID: 4776502463359372021}
   - component: {fileID: 5173754843601624225}
   m_Layer: 0
-  m_Name: Player Projectile
+  m_Name: Player Main Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19699,6 +19699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 50
+  hitForce: 20
   startSpeed: 25
   projectileSize: 0.5
   collisionMask:

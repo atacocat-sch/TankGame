@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ArtileryStrike : MonoBehaviour
 {
-    [SerializeField] float damage;
-    [SerializeField] AnimationCurve damageFalloff;
-    [SerializeField] float range;
-    [SerializeField] LayerMask damageMask;
-    [SerializeField] int rays;
-    [SerializeField] float delay;
-    [SerializeField] Transform fxDetach;
+    public float damage;
+    public AnimationCurve damageFalloff;
+    public float range;
+    public LayerMask damageMask;
+    public int rays;
+    public float delay;
+    public Transform fxDetach;
 
     private void Start()
     {

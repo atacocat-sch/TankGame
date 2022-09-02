@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class TankCursor : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer cursor;
+    public SpriteRenderer cursor;
 
     private void OnEnable()
     {

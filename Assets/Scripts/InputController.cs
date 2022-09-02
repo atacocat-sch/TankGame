@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(TankMovement))]
 public class InputController : MonoBehaviour
 {
-    [SerializeField] UnityEvent<float>[] shootEvents;
+    public UnityEvent<float>[] shootEvents;
 
     PlayerInput inputComponent;
     TankMovement movement;

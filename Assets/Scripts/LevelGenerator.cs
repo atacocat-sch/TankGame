@@ -6,15 +6,15 @@ using UnityEngine.Tilemaps;
 
 public class LevelGenerator : MonoBehaviour
 {
-    [SerializeField] Tilemap target;
-    [SerializeField] Vector2Int mapSize;
-    [SerializeField] TerrainFeature[] features;
+    public Tilemap target;
+    public Vector2Int mapSize;
+    public TerrainFeature[] features;
 
     [Space]
-    [SerializeField] TileBase wallTile;
-    [SerializeField] float wallRange;
-    [SerializeField] float wallNoiseScale;
-    [SerializeField] float wallNoiseAmplitude;
+    public TileBase wallTile;
+    public float wallRange;
+    public float wallNoiseScale;
+    public float wallNoiseAmplitude;
 
     private void Start()
     {
@@ -82,7 +82,7 @@ public class LevelGenerator : MonoBehaviour
     }
 
     [System.Serializable]
-    private class TerrainFeature
+    public class TerrainFeature
     {
         public TileBase tile;
         public bool replace;

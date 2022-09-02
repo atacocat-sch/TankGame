@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AttackCooldownUI : MonoBehaviour
 {
-    [SerializeField] GameObject target;
-    [SerializeField] RectTransform sliderFill;
+    public GameObject target;
+    public RectTransform sliderFill;
 
     private void Update()
     {

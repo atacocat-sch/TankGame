@@ -15501,8 +15501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 445aa332c422afd419f36583ee1ca493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 40
-  maxHealth: 40
+  currentHealth: 80
+  maxHealth: 80
   detachOnDeath:
   - {fileID: 8348006080695612051}
   - {fileID: 8348006080696566225}
