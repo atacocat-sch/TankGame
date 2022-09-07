@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public float currentHealth;
-    public float maxHealth;
+    public float currentHealth = 100.0f;
+    public float maxHealth = 100.0f;
+    public float hitInvulnerability = -1.0f;
 
     [Space]
     public Transform[] detachOnDeath;
@@ -15,23 +16,41 @@ public class Health : MonoBehaviour
     public GameObject damagePrefab;
     public GameObject deathPrefab;
 
+    float lastDamageTime;
+
+    public event System.Action<DamageArgs> DamageEvent;
+    public event System.Action<DamageArgs> DeathEvent;
+
     public float CurrentHeath => currentHealth;
     public float MaxHealth => maxHealth;
 
     public void Damage (DamageArgs args)
     {
-        currentHealth -= args.damage;
+        if (lastDamageTime + hitInvulnerability > Time.time) return;
 
+        currentHealth -= args.damage;
+        
         if (damagePrefab) Instantiate(damagePrefab, transform.position, Quaternion.identity);
+
+        lastDamageTime = Time.time;
 
         if (currentHealth < 0.0f)
         {
+            args.damage += currentHealth;
+            DamageEvent?.Invoke(args);
+
             Die(args);
+        }
+        else
+        {
+            DamageEvent?.Invoke(args);
         }
     }
 
     public void Die(DamageArgs args)
     {
+        currentHealth = 0.0f;
+
         Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
 
         if (deathPrefab)
@@ -51,6 +70,8 @@ public class Health : MonoBehaviour
                 detachRigidbody.velocity = rigidbody.velocity;
             }
         }
+
+        DeathEvent?.Invoke(args);
 
         gameObject.SetActive(false);
     }

@@ -17,7 +17,7 @@ public class TankGun : MonoBehaviour, IAttack
     float nextFireTime;
     bool triggerState;
 
-    public event System.Action OnShootEvent;
+    public event System.Action ShootEvent;
 
     public float FireDelay => fireDelay;
     public float NextFireTime => nextFireTime;
@@ -32,7 +32,7 @@ public class TankGun : MonoBehaviour, IAttack
 
         nextFireTime = Time.time + fireDelay;
 
-        OnShootEvent?.Invoke();
+        ShootEvent?.Invoke();
         shootEventEditor?.Invoke();
 
         if (!fullAuto) triggerState = false;

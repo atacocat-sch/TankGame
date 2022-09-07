@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Projectile : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class Projectile : MonoBehaviour
     [Space]
     public GameObject landFX;
     public GameObject impactFX;
+
+    [Space]
+    public UnityEvent landEvent;
+    public UnityEvent hitEvent;
 
     float age;
     new Rigidbody2D rigidbody;
@@ -46,18 +51,19 @@ public class Projectile : MonoBehaviour
         RaycastHit2D hit = Physics2D.CircleCast(point, projectileSize, direction, distance + 0.1f, collisionMask);
         if (hit)
         {
-            if (hit.transform.TryGetComponent(out Health health))
-            {
-                if (damage > 0.001f) health.Damage(new DamageArgs(transform.root.gameObject, damage));
-            }
-
             if (hit.rigidbody)
             {
                 hit.rigidbody.velocity += direction * hitForce;
             }
 
+            if (hit.transform.TryGetComponent(out Health health))
+            {
+                if (damage > 0.001f) health.Damage(new DamageArgs(transform.root.gameObject, damage));
+            }
+
             if (impactFX)
             {
+                hitEvent?.Invoke();
                 impactFX.SetActive(true);
                 impactFX.transform.SetParent(null);
             }
@@ -69,6 +75,7 @@ public class Projectile : MonoBehaviour
         {
             if (landFX)
             {
+                landEvent?.Invoke();
                 landFX.SetActive(true);
                 landFX.transform.SetParent(null);
             }
