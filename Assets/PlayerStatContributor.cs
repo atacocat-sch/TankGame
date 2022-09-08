@@ -11,11 +11,13 @@ public class PlayerStatContributor : MonoBehaviour
     private void OnEnable()
     {
         mainGun.ShootEvent += OnShootEvent;
+        mainGun.HitEvent += OnHitEvent;
     }
 
     private void OnDisable()
     {
         mainGun.ShootEvent -= OnShootEvent;
+        mainGun.HitEvent -= OnHitEvent;
     }
 
     private void Start()
@@ -31,5 +33,18 @@ public class PlayerStatContributor : MonoBehaviour
     private void OnShootEvent()
     {
         Stats.IncrementValue("shots_fired", 1.0f);
+    }
+
+    private void OnHitEvent(GameObject hitObject, DamageArgs args)
+    {
+        Stats.IncrementValue("damage_delt", args.damage);
+
+        if (hitObject.TryGetComponent(out Health health))
+        {
+            if (health.currentHealth <= 0)
+            {
+                Stats.IncrementValue("enemies_killed", 1.0f);
+            }
+        }
     }
 }

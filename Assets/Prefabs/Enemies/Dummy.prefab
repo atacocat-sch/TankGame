@@ -100,6 +100,10 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8348006080250415255, guid: 40548a22bbc7f654cbdae15030f97601, type: 3}
+      propertyPath: pathCheckDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8348006080250415255, guid: 40548a22bbc7f654cbdae15030f97601, type: 3}
       propertyPath: obstacleAvoidanceAngle
       value: 45
       objectReference: {fileID: 0}

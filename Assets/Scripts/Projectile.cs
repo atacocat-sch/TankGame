@@ -23,11 +23,13 @@ public class Projectile : MonoBehaviour
 
     [Space]
     public UnityEvent landEvent;
-    public UnityEvent hitEvent;
+    public UnityEvent<GameObject, DamageArgs> hitEvent;
 
     float age;
     new Rigidbody2D rigidbody;
     Vector2 previousPosition;
+
+    public GameObject Shooter { get; set; }
 
     private void Awake()
     {
@@ -56,14 +58,18 @@ public class Projectile : MonoBehaviour
                 hit.rigidbody.velocity += direction * hitForce;
             }
 
+            DamageArgs args = new DamageArgs(Shooter, damage);
             if (hit.transform.TryGetComponent(out Health health))
             {
-                if (damage > 0.001f) health.Damage(new DamageArgs(transform.root.gameObject, damage));
+                if (damage > 0.001f)
+                {
+                    health.Damage(args);
+                }
             }
 
             if (impactFX)
             {
-                hitEvent?.Invoke();
+                hitEvent?.Invoke(hit.transform.gameObject, args);
                 impactFX.SetActive(true);
                 impactFX.transform.SetParent(null);
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +28,7 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         RegenerateMap();
     }
@@ -53,15 +54,9 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    public void GetPath(Vector2 startWorld, Vector2 endWorld, ref List<Vector2> path)
+    public void GetPath(Vector2 startWorld, Vector2 endWorld, List<Vector2> path)
     {
         path.Clear();
-
-        if (!Physics2D.CircleCast(startWorld, boxSize, endWorld - startWorld, (endWorld - startWorld).magnitude))
-        {
-            path.Add(endWorld);
-            return;
-        }
 
         List<PathfindingNode> openNodes = new List<PathfindingNode>();
         Dictionary<Vector2Int, PathfindingNode> closedNodes = new Dictionary<Vector2Int, PathfindingNode>();
@@ -69,6 +64,9 @@ public class Pathfinder : MonoBehaviour
         Vector2Int start = Vector2Int.RoundToInt((startWorld - Pathfinder.start) / boxSize);
         Vector2Int end = Vector2Int.RoundToInt((endWorld - Pathfinder.start) / boxSize);
         PathfindingNode head = null;
+
+        start = GetClosesetValidPoint(start);
+        end = GetClosesetValidPoint(end);
 
         openNodes.Add(new PathfindingNode(start, start, end, null));
 
@@ -96,34 +94,92 @@ public class Pathfinder : MonoBehaviour
 
             foreach (var offset in Neighbours)
             {
-                if (!closedNodes.ContainsKey(node.key + offset))
+                if (!map.ContainsKey(node.key + offset)) continue;
+                if (map[node.key + offset]) continue;
+
+                PathfindingNode tmp = openNodes.Find(q => q.key == node.key + offset);
+                if (tmp != null)
+                {
+                    tmp.previous = node;
+                }
+                else if (!closedNodes.ContainsKey(node.key + offset))
                 {
                     openNodes.Add(new PathfindingNode(node.key + offset, start, end, node));
                 }
-                else 
-                {
-                    PathfindingNode previous = closedNodes[node.key + offset].previous;
 
-                    if (previous != null ? closedNodes[node.key + offset].previous.fCost > node.fCost : true)
-                    {
-                        closedNodes[node.key + offset].previous = node;
-                    }
-                }
+                //Debug.DrawLine((Vector2)node.key * boxSize + Pathfinder.start, ((Vector2)node.key + offset) * boxSize + Pathfinder.start, Color.yellow);
             }
         }
+
+        if (head == null)
+        {
+            path.Add(end);
+            return;
+        }
+
+        Vector2Int direction = head.previous != null ? head.key - head.previous.key : Vector2Int.zero;
 
         head = head.previous;
         path.Add(endWorld);
 
         while (head?.previous != null)
         {
-            path.Add((Vector2)head.key * boxSize + start);
+            if (head.key - head.previous.key != direction)
+            {
+                //Debug.DrawLine(Pathfinder.start + (Vector2)head.key * boxSize, Pathfinder.start + (Vector2)head.previous.key * boxSize, Color.green);
+
+                path.Add((Vector2)head.key * boxSize + Pathfinder.start);
+                direction = head.key - head.previous.key;
+            }
+
             head = head.previous;
         }
 
         path.Add(startWorld);
 
         path.Reverse();
+    }
+
+    private Vector2Int GetClosesetValidPoint(Vector2Int start)
+    {
+        Vector2Int point = start;
+
+        List<Vector2Int> openList = new List<Vector2Int>();
+        HashSet<Vector2Int> closedList = new HashSet<Vector2Int>();
+        Dictionary<Vector2Int, Vector2Int> previous = new Dictionary<Vector2Int, Vector2Int>();
+
+        openList.Add(point);
+
+        while (map[point])
+        {
+            point = openList[0];
+            int index = 0;
+            for (int i = 0; i < openList.Count; i++)
+            {
+                if (CloseishDistance(openList[i] - start) < CloseishDistance(point - start))
+                {
+                    point = openList[i];
+                    index = i;
+                }
+            }
+
+            openList.RemoveAt(index);
+            closedList.Add(point);
+
+            foreach (var offset in Neighbours)
+            {
+                int i = openList.FindIndex(q => q == point + offset);
+                if (openList.Exists(q => q == point + offset) && previous.ContainsKey(point + offset))
+                {
+                    previous[openList[i]] = point + offset;
+                }
+                else if (!closedList.Contains(point + offset) && map.ContainsKey(point + offset))
+                {
+                    openList.Add(point + offset);
+                }
+            }
+        }
+        return point;
     }
 
     private void OnDrawGizmosSelected()
@@ -152,13 +208,13 @@ public class Pathfinder : MonoBehaviour
         public PathfindingNode(Vector2Int key, Vector2Int start, Vector2Int end, PathfindingNode previous)
         {
             this.key = key;
-            gCost = KindOfDistance(start - key);
-            hCost = KindOfDistance(end - key);
+            gCost = CloseishDistance(start - key);
+            hCost = CloseishDistance(end - key);
             this.previous = previous;
         }
     }
 
-    public static int KindOfDistance(Vector2Int v)
+    public static int CloseishDistance(Vector2Int v)
     {
         v.x = Mathf.Abs(v.x);
         v.y = Mathf.Abs(v.y);
@@ -171,9 +227,9 @@ public class Pathfinder : MonoBehaviour
 
     readonly Vector2Int[] Neighbours = new Vector2Int[]
     {
-        new Vector2Int( 1,  1),
-        new Vector2Int(-1,  1),
-        new Vector2Int( 1, -1),
-        new Vector2Int(-1, -1),
+        new Vector2Int( 1,  0),
+        new Vector2Int(-1,  0),
+        new Vector2Int( 0,  1),
+        new Vector2Int( 0, -1),
     };
 }

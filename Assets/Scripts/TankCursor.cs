@@ -19,6 +19,10 @@ public class TankCursor : MonoBehaviour
 
     private void LateUpdate()
     {
+#if !UNITY_EDITOR
+        gameObject.SetActive(Application.platform != RuntimePlatform.Android);
+#endif
+
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         transform.rotation = Quaternion.identity;
     }

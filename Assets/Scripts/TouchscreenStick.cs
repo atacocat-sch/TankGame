@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class TouchscreenStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Vector2 parentPosition;
+    public Vector2 offset;
     public float startSoftZone;
 
     [Space]
@@ -14,55 +14,57 @@ public class TouchscreenStick : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public UnityEvent StickDownEvent;
     public UnityEvent StickUpEvent;
 
-    Vector2 direction;
+    Vector2 vector;
 
     new public RectTransform transform => base.transform as RectTransform;
-    public RectTransform parent => transform.parent as RectTransform;
+    public RectTransform child => transform.GetChild(0) as RectTransform;
 
     private void Awake()
     {
-        parentPosition = parent.anchoredPosition;
-    }
-
-    private void OnEnable()
-    {
-        parent.gameObject.SetActive(Application.platform == RuntimePlatform.Android);
+        offset = transform.anchoredPosition;
     }
 
     private void Update()
     {
-        ValueChangeEvent?.Invoke(direction);
+        gameObject.SetActive(Application.platform == RuntimePlatform.Android);
+        ValueChangeEvent?.Invoke(vector);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if ((eventData.position - (Vector2)parent.position).sqrMagnitude < startSoftZone * startSoftZone)
-        {
-            parent.position = eventData.position;
-        }
-        else
+        if ((eventData.position - (Vector2)child.position).sqrMagnitude < startSoftZone * startSoftZone)
         {
             transform.position = eventData.position;
         }
+        else
+        {
+            child.position = eventData.position;
+        }
 
         StickDownEvent?.Invoke();
+
+        eventData.Use();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position;
-        transform.anchoredPosition = Vector2.ClampMagnitude(transform.anchoredPosition, Mathf.Max(parent.rect.width, parent.rect.height) / 2.0f);
+        child.position = eventData.position;
+        child.anchoredPosition = Vector2.ClampMagnitude(child.anchoredPosition, Mathf.Max(transform.rect.width, transform.rect.height) / 2.0f);
 
-        direction = transform.anchoredPosition / parent.rect.size * 2.0f;
+        vector = child.anchoredPosition / transform.rect.size * 2.0f;
+
+        eventData.Use();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        parent.anchoredPosition = parentPosition;
-        transform.anchoredPosition = Vector2.zero;
+        transform.anchoredPosition = offset;
+        child.anchoredPosition = Vector2.zero;
 
-        direction = Vector2.zero;
+        vector = Vector2.zero;
 
         StickUpEvent?.Invoke();
+
+        eventData.Use();
     }
 }

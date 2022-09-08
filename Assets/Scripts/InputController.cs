@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [SelectionBase]
@@ -13,6 +15,7 @@ public class InputController : MonoBehaviour
 {
     public float angleScale;
 
+    [Space]
     public UnityEvent<float>[] shootEvents;
 
     PlayerInput inputComponent;
@@ -20,6 +23,11 @@ public class InputController : MonoBehaviour
 
     Vector2 shootPoint;
     bool screenSpaceShootPoint;
+
+    UnityEngine.InputSystem.Controls.TouchControl aimTouch;
+
+    public float Throttle { get => movement.ThrottleInput; set => movement.ThrottleInput = value; }
+    public float Steering { get => movement.TurnInput; set => movement.TurnInput = value; }
 
     private void Awake()
     {
@@ -46,19 +54,57 @@ public class InputController : MonoBehaviour
     {
         if (screenSpaceShootPoint) movement.ShootPoint = Camera.main.ScreenToWorldPoint(shootPoint);
         else movement.ShootPoint = shootPoint;
+        ProcessTouch();
+    }
+
+    private void ProcessTouch()
+    {
+        if (aimTouch == null)
+        {
+            if (Touchscreen.current == null) return;
+
+            foreach (var touch in Touchscreen.current.touches)
+            {
+                Vector2 pos = touch.position.ReadValue();
+
+                if (!touch.press.wasPressedThisFrame) continue;
+                if (pos.x < 650.0f && pos.y < 650.0f) continue;
+
+                ShootPress();
+                aimTouch = touch;
+                break;
+            }
+        }
+
+        if (aimTouch != null)
+        {
+            if (!aimTouch.press.isPressed)
+            {
+                aimTouch = null;
+                ShootRelease();
+                return;
+            }
+
+            shootPoint = aimTouch.position.ReadValue();
+            screenSpaceShootPoint = true;
+        }
     }
 
     private void OnActionTriggered(InputAction.CallbackContext callbackContext)
     {
-        if (Application.platform == RuntimePlatform.Android) return;
+        if (Application.isMobilePlatform)
+        {
+            Debug.Log("uh oh");
+            return;
+        }
 
         switch (callbackContext.action.name)
         {
             case "Throttle":
-                movement.ThrottleInput = callbackContext.ReadValue<float>();
+                Throttle = callbackContext.ReadValue<float>();
                 break;
             case "Turning":
-                movement.TurnInput = callbackContext.ReadValue<float>();
+                Steering = callbackContext.ReadValue<float>();
                 break;
             case "Shoot Point":
                 shootPoint = callbackContext.ReadValue<Vector2>();
@@ -75,24 +121,28 @@ public class InputController : MonoBehaviour
         }
     }
 
-    public void SetMoveDirection (Vector2 direction)
+    public void SetMoveDirection (Vector2 vector)
     {
-        direction = Vector2.ClampMagnitude(direction, 1.0f);
+        vector = Vector2.ClampMagnitude(vector, 1.0f);
 
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float targetAngle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
         float currentAngle = movement.transform.eulerAngles.z;
         float deltaAngle = Mathf.DeltaAngle(targetAngle, currentAngle);
 
-        float dot = Vector2.Dot(direction, movement.transform.right);
-
-        movement.ThrottleInput = dot;
-        movement.TurnInput = Mathf.Clamp(deltaAngle * angleScale, -1.0f, 1.0f) * direction.magnitude;
+        movement.ThrottleInput = vector.magnitude;
+        movement.TurnInput = Mathf.Clamp(deltaAngle * angleScale, -1.0f, 1.0f) * vector.magnitude;
     }
 
     public void SetShootDirection (Vector2 direction)
     {
         shootPoint = (Vector2)transform.position + direction;
         screenSpaceShootPoint = false;
+    }
+
+    public void SetShootPoint (Vector2 screenPoint)
+    {
+        shootPoint = screenPoint;
+        screenSpaceShootPoint = true;
     }
 
     public void ShootPress ()

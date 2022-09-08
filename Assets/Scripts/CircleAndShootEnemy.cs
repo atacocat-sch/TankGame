@@ -16,15 +16,33 @@ public class CircleAndShootEnemy : EnemyBase
 
         if (Target)
         {
-            Vector2 vectorBetween = (Target.transform.position - transform.position);
-            float distToTarget = vectorBetween.magnitude;
-            Vector2 direction = vectorBetween / distToTarget;
+            int offset = 1;
 
-            float angle = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg + angleOffset;
-            Vector2 offsetDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * circleRadius;
-            MoveTowards((Vector2)Target.transform.position + offsetDirection);
+            float distToTarget;
+            Vector2 direction;
+            Vector2 targetPoint;
 
-            Debug.DrawLine(Target.transform.position, (Vector2)Target.transform.position + offsetDirection, Color.blue);
+            do
+            {
+                Vector2 vectorBetween = (Target.transform.position - transform.position);
+                distToTarget = vectorBetween.magnitude;
+                direction = vectorBetween / distToTarget;
+
+                if (offset * angleOffset > 360.0f)
+                {
+                    targetPoint = Target.transform.position;
+                    break;
+                }
+
+                float angle = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg + angleOffset * offset;
+                Vector2 offsetDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * circleRadius;
+
+                targetPoint = (Vector2)Target.transform.position + offsetDirection;
+                offset++;
+            }
+            while (Physics2D.OverlapCircle(targetPoint, 1.0f, 1));
+
+            MoveTowards(targetPoint);
 
             if (distToTarget < attackRadius)
             {

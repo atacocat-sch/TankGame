@@ -18,10 +18,11 @@ public class FleeToDistanceEnemy : EnemyBase
         {
             Vector2 vector = Target.transform.position - transform.position;
             float dist = vector.magnitude;
+            Vector2 direction = vector / dist;
 
             if (fleeing)
             {
-                MoveInDirection(-vector);
+                MoveTowards(-direction * 15.0f);
 
                 if (dist > attackDistance)
                 {
@@ -30,7 +31,7 @@ public class FleeToDistanceEnemy : EnemyBase
             }
             else
             {
-                MoveInDirection(Vector2.zero);
+                MoveTowards(transform.position);
 
                 Attack(attackIndex);
                 if (dist < fleeDistance)

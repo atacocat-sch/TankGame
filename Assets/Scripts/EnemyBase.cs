@@ -30,7 +30,7 @@ public class EnemyBase : MonoBehaviour
     private Health health;
     private Vector2 movePoint;
 
-    private float lastPathfindTime;
+    private float lastPathfindTime = float.MinValue;
     private List<Vector2> path = new List<Vector2>();
 
     public float SpawnWeight => spawnWeight;
@@ -68,43 +68,59 @@ public class EnemyBase : MonoBehaviour
 
         if (TryGetComponent(out health))
         {
-            health.DamageEvent += OnDamage;
+            health.DamageEvent += OnDamageEvent;
         }
+    }
+
+    private void OnDamageEvent(DamageArgs args)
+    {
+        if (args.damager) Target = args.damager;
     }
 
     private void LateUpdate()
     {
-        if (Time.time > lastPathfindTime + pathfindingDelay)
-        {
-            Pathfinder.Instance.GetPath(transform.position, movePoint, ref path);
-        }
+        Vector2 point = transform.position;
+        Vector2 direction = movePoint - (Vector2)transform.position;
+        float distance = direction.magnitude;
+        direction /= distance;
 
-        if (path.Count > 0)
+        if (distance < 1.0f)
         {
-            if ((path.First() - (Vector2)transform.position).sqrMagnitude < pathCheckDistance * pathCheckDistance)
+            MoveInDirection(Vector2.zero);
+        }
+        else if (Physics2D.CircleCast(point, 1.0f, direction, distance, 1))
+        {
+            if (Time.time > lastPathfindTime + pathfindingDelay)
+            {
+                Pathfinder.Instance.GetPath(transform.position, movePoint, path);
+                lastPathfindTime = Time.time;
+            }
+
+            while (path.Count > 0 && (path.First() - (Vector2)transform.position).sqrMagnitude < pathCheckDistance * pathCheckDistance)
             {
                 path.RemoveAt(0);
             }
-            MoveTowards(path.First());
+
+            if (path.Count > 0)
+            {
+                MoveInDirection(path.First() - (Vector2)transform.position);
+            }
+            else
+            {
+                MoveInDirection(Vector2.zero);
+            }
         }
         else
         {
-            MoveTowards(transform.position);
+            MoveInDirection(direction);
         }
-    }
-
-    private void OnDamage(DamageArgs args)
-    {
-        Stats.IncrementValue("damage_delt", args.damage);
     }
 
     private void OnDisable()
     {
         Enemies.Remove(this);
 
-        health.DamageEvent -= OnDamage;
-
-        Stats.IncrementValue("enemies_killed", 1.0f);
+        health.DamageEvent -= OnDamageEvent;
     }
 
     protected virtual void Update()
@@ -125,10 +141,10 @@ public class EnemyBase : MonoBehaviour
 
     public void MoveTowards(Vector2 point)
     {
-        MoveInDirection(point - (Vector2)transform.position);
+        movePoint = point;
     }
 
-    public void MoveInDirection(Vector2 direction)
+    private void MoveInDirection(Vector2 direction)
     {
         if (direction.sqrMagnitude < 0.01f * 0.01f)
         {
@@ -152,9 +168,11 @@ public class EnemyBase : MonoBehaviour
     protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        for (int i = 0; i < path.Count - 1; i++)
+        for (int i = 0; i < path.Count; i++)
         {
-            Gizmos.DrawLine(path[i], path[i + 1]);
+            if (i != path.Count - 1) Gizmos.DrawLine(path[i], path[i + 1]);
+
+            Gizmos.DrawSphere(path[i], 0.1f);
         }
 
         Gizmos.color = Color.white;

@@ -18,6 +18,7 @@ public class TankGun : MonoBehaviour, IAttack
     bool triggerState;
 
     public event System.Action ShootEvent;
+    public event System.Action<GameObject, DamageArgs> HitEvent;
 
     public float FireDelay => fireDelay;
     public float NextFireTime => nextFireTime;
@@ -28,7 +29,12 @@ public class TankGun : MonoBehaviour, IAttack
         if (Time.time < nextFireTime) return;
         if (!triggerState) return;
 
-        Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+        GameObject projectileObject = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+        if (projectileObject.TryGetComponent(out Projectile projectile))
+        {
+            projectile.hitEvent.AddListener(OnHitEvent);
+            projectile.Shooter = transform.root.gameObject;
+        }
 
         nextFireTime = Time.time + fireDelay;
 
@@ -41,5 +47,10 @@ public class TankGun : MonoBehaviour, IAttack
     public void Shoot(float inputValue)
     {
         triggerState = inputValue > 0.5f;
+    }
+
+    public void OnHitEvent (GameObject hitObject, DamageArgs args)
+    {
+        HitEvent?.Invoke(hitObject, args);
     }
 }

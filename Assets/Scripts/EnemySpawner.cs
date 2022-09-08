@@ -15,6 +15,9 @@ public class EnemySpawner : MonoBehaviour
     public float spawnB;
     public float spawnC;
 
+    [Space]
+    public List<GameObject> preSpawnEnemies;
+
     float gameDuration;
     float nextSpawnTime;
 
@@ -26,11 +29,15 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!killedDummyTanks)
         {
-            if (EnemyBase.Enemies.Count == 0)
+            foreach (var enemy in preSpawnEnemies)
             {
-                killedDummyTanks = true;
+                if (enemy.activeSelf)
+                {
+                    return;
+                }
             }
-            else return;
+
+            killedDummyTanks = true;
         }
 
         if (Time.time > nextSpawnTime)
