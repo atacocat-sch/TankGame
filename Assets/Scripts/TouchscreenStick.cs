@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class TouchscreenStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Vector2 offset;
+    public bool useSoftZone;
     public float startSoftZone;
 
     [Space]
@@ -32,7 +33,7 @@ public class TouchscreenStick : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if ((eventData.position - (Vector2)child.position).sqrMagnitude < startSoftZone * startSoftZone)
+        if ((eventData.position - (Vector2)child.position).sqrMagnitude < startSoftZone * startSoftZone && useSoftZone)
         {
             transform.position = eventData.position;
         }
@@ -49,7 +50,7 @@ public class TouchscreenStick : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public void OnDrag(PointerEventData eventData)
     {
         child.position = eventData.position;
-        child.anchoredPosition = Vector2.ClampMagnitude(child.anchoredPosition, Mathf.Max(transform.rect.width, transform.rect.height) / 2.0f);
+        child.anchoredPosition = Vector2.ClampMagnitude(child.anchoredPosition, Mathf.Min(transform.rect.width, transform.rect.height) / 2.0f);
 
         vector = child.anchoredPosition / transform.rect.size * 2.0f;
 
@@ -58,7 +59,7 @@ public class TouchscreenStick : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.anchoredPosition = offset;
+        if (useSoftZone) transform.anchoredPosition = offset;
         child.anchoredPosition = Vector2.zero;
 
         vector = Vector2.zero;

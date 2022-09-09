@@ -17666,6 +17666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0}
+  useSoftZone: 1
   startSoftZone: 100
   ValueChangeEvent:
     m_PersistentCalls:

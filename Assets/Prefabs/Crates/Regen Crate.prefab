@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3864451495422033443}
   - component: {fileID: 3864451495422033468}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3864451495770545801}
   - component: {fileID: 8147496912961585435}
   - component: {fileID: 6953199339634654107}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Regen Crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 3864451495770545806}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 3864451495860948782}
   - component: {fileID: 3864451495860948776}
   - component: {fileID: 3864451495860948783}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5046,7 +5046,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3864451496166229087}
   - component: {fileID: 3864451496166229080}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Crate Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5129,7 +5129,7 @@ GameObject:
   - component: {fileID: 3864451496407340663}
   - component: {fileID: 3864451496407340657}
   - component: {fileID: 3864451496407340656}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9991,7 +9991,7 @@ GameObject:
   - component: {fileID: 3864451496448904645}
   - component: {fileID: 3864451496448904647}
   - component: {fileID: 3864451496448904646}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Regen FX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14853,7 +14853,7 @@ GameObject:
   - component: {fileID: 3864451497130351192}
   - component: {fileID: 3864451497130351193}
   - component: {fileID: 3864451497130351194}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14947,7 +14947,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3864451497201726263}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Land FX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14980,6 +14980,10 @@ PrefabInstance:
     - target: {fileID: 5376520830565889618, guid: 1e93080c46742e84bb0029499ef5a815, type: 3}
       propertyPath: m_Name
       value: Health Offscreen Indicator
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376520830565889618, guid: 1e93080c46742e84bb0029499ef5a815, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5376520830565889619, guid: 1e93080c46742e84bb0029499ef5a815, type: 3}
       propertyPath: m_RootOrder
@@ -15024,6 +15028,10 @@ PrefabInstance:
     - target: {fileID: 5376520830565889619, guid: 1e93080c46742e84bb0029499ef5a815, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376520831904595398, guid: 1e93080c46742e84bb0029499ef5a815, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5376520831904595399, guid: 1e93080c46742e84bb0029499ef5a815, type: 3}
       propertyPath: m_LocalPosition.z

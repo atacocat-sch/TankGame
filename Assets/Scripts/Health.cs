@@ -34,7 +34,7 @@ public class Health : MonoBehaviour
 
         lastDamageTime = Time.time;
 
-        if (currentHealth < 0.0f)
+        if (currentHealth <= 0.0f)
         {
             args.damage += currentHealth;
             DamageEvent?.Invoke(args);
