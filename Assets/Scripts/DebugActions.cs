@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class DebugActions : MonoBehaviour
 {
+#if UNITY_EDITOR
     private void Update()
     {
         if (Keyboard.current.numpad7Key.wasPressedThisFrame)
@@ -23,4 +24,5 @@ public class DebugActions : MonoBehaviour
             }
         }
     }
+#endif
 }

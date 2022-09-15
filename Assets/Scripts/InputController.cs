@@ -129,7 +129,7 @@ public class InputController : MonoBehaviour
         float currentAngle = movement.transform.eulerAngles.z;
         float deltaAngle = Mathf.DeltaAngle(targetAngle, currentAngle);
 
-        movement.ThrottleInput = vector.magnitude;
+        movement.ThrottleInput = Vector2.Dot(vector, transform.right);
         movement.TurnInput = Mathf.Clamp(deltaAngle * angleScale, -1.0f, 1.0f) * vector.magnitude;
     }
 
