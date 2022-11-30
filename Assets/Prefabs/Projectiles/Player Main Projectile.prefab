@@ -14537,6 +14537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 67963542854141401}
+  - component: {fileID: 4594250409430357502}
   m_Layer: 0
   m_Name: Detach
   m_TagString: Untagged
@@ -14559,6 +14560,19 @@ Transform:
   m_Father: {fileID: 7250732222509038555}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4594250409430357502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3657356255478362227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff2e12b6c8705714d863d67243873358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 1
 --- !u!1 &4649085766026605202
 GameObject:
   m_ObjectHideFlags: 0
@@ -24294,6 +24308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 270326630194228825}
+  - component: {fileID: 4621269405650650852}
   m_Layer: 0
   m_Name: Impact FX
   m_TagString: Untagged
@@ -24317,6 +24332,19 @@ Transform:
   m_Father: {fileID: 7250732222509038555}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4621269405650650852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6318974587231053817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff2e12b6c8705714d863d67243873358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 1
 --- !u!1 &7250732221333104038
 GameObject:
   m_ObjectHideFlags: 0
@@ -24536,7 +24564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 50
   hitForce: 20
-  startSpeed: 25
+  startSpeed: 50
   projectileSize: 0.5
   collisionMask:
     serializedVersion: 2
@@ -26195,7 +26223,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     speedRange: {x: 0, y: 1}
-    tilesX: 5
+    tilesX: 6
     tilesY: 1
     animationType: 0
     rowIndex: 0

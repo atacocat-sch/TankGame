@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 173404045930388741}
+  - component: {fileID: 3814389867688537666}
   m_Layer: 0
   m_Name: Impact FX
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 5059868713509065263}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3814389867688537666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634104936819316299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff2e12b6c8705714d863d67243873358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 1
 --- !u!1 &2989660365146788045
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +152,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5059868713048127731}
   - component: {fileID: 5059868713048127733}
-  - component: {fileID: 5059868713048127732}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -211,19 +224,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5059868713048127732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5059868713048127730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb55f89798a2b4f479b6255a0dbb1a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offset: {x: 0, y: 0}
 --- !u!1 &5059868713509065261
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +235,7 @@ GameObject:
   - component: {fileID: 5059868713509065263}
   - component: {fileID: -74265592010420579}
   - component: {fileID: 491310159430204696}
+  - component: {fileID: 140638115532414867}
   m_Layer: 0
   m_Name: Enemy Projectile
   m_TagString: Untagged
@@ -293,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  hitForce: 0
   startSpeed: 10
   projectileSize: 0.2
   collisionMask:
@@ -323,7 +325,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shadow: {fileID: 5059868713048127732}
+  shadow: {fileID: 7864119487454638997}
   shadowDistance:
     serializedVersion: 2
     m_Curve:
@@ -350,6 +352,28 @@ MonoBehaviour:
     m_RotationOrder: 4
   landFX: {fileID: 0}
   impactFX: {fileID: 1634104936819316299}
+  landEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  hitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &140638115532414867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5059868713509065261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e91b211dbcec634a814f9fad4cb1405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 5059868713048127733}
+  scaleFrequency: 25
+  scaleAmplitude: 0.3
+  lockDirection: 1
 --- !u!1 &6490438055131959170
 GameObject:
   m_ObjectHideFlags: 0

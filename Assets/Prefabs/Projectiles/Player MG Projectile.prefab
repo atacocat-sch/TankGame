@@ -14973,9 +14973,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d694d03538acf874ba8faee24c8f9f5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 1.5
   hitForce: 0
-  startSpeed: 25
+  startSpeed: 50
   projectileSize: 0.2
   collisionMask:
     serializedVersion: 2
@@ -15050,6 +15050,12 @@ MonoBehaviour:
     m_RotationOrder: 4
   landFX: {fileID: 4042509223019438143}
   impactFX: {fileID: 4042509223019438143}
+  landEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  hitEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5526621665531743965
 GameObject:
   m_ObjectHideFlags: 0

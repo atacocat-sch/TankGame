@@ -14,6 +14,12 @@ public class TankGun : MonoBehaviour, IAttack
     [Space]
     public UnityEvent shootEventEditor;
 
+    [Space]
+    public Transform turretSprite;
+    public float distortionDuration;
+    public AnimationCurve xScale;
+    public AnimationCurve yScale;
+
     float nextFireTime;
     bool triggerState;
 
@@ -42,6 +48,15 @@ public class TankGun : MonoBehaviour, IAttack
         shootEventEditor?.Invoke();
 
         if (!fullAuto) triggerState = false;
+    }
+
+    private void LateUpdate()
+    {
+        float t = (Time.time - (nextFireTime - FireDelay)) / distortionDuration;
+        if (turretSprite && t > 0.0f && t < 1.0f)
+        {
+            turretSprite.localScale = new Vector3(xScale.Evaluate(t), yScale.Evaluate(t), 1.0f);
+        }
     }
 
     public void Shoot(float inputValue)
