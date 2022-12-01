@@ -15,7 +15,7 @@ public class EndScreen : MonoBehaviour
     public float shakeFrequency;
 
     [Space]
-    public Team playerTeam;
+    public Signal allPlayersDeadSignal;
 
     bool runSetup = false;
 
@@ -23,13 +23,7 @@ public class EndScreen : MonoBehaviour
     {
         if (runSetup) return;
 
-        foreach (TeamPlayer player in playerTeam.players)
-        {
-            if (player.TryGetComponent(out Health health))
-            {
-                health.DeathEvent += Show;
-            }
-        }
+        allPlayersDeadSignal.OnRaise += Show;
 
         runSetup = true;
         gameObject.SetActive(false);
@@ -37,13 +31,7 @@ public class EndScreen : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (TeamPlayer player in playerTeam.players)
-        {
-            if (player.TryGetComponent(out Health health))
-            {
-                health.DeathEvent -= Show;
-            }
-        }
+        allPlayersDeadSignal.OnRaise -= Show;
 
         runSetup = false;
     }
@@ -55,16 +43,8 @@ public class EndScreen : MonoBehaviour
         ((RectTransform)layout).anchoredPosition = direction * shakeStrength;
     }
 
-    private void Show(DamageArgs ctx)
+    private void Show()
     {
-        foreach (TeamPlayer player in playerTeam.players)
-        {
-            if (player.TryGetComponent(out Health health)) continue;
-            if (health.currentHealth < 0.0f) continue;
-
-            return;
-        }
-
         gameObject.SetActive(true);
 
         string[] flavourTexts = flavourTextSource.text.Split('\n');

@@ -6,6 +6,7 @@ using UnityEngine;
 public class Team : ScriptableObject
 {
     public string id;
+    public Signal teamWipeSignal;
 
     public HashSet<TeamPlayer> players = new HashSet<TeamPlayer>();
 
@@ -48,6 +49,8 @@ public class Team : ScriptableObject
     public void Deregister (TeamPlayer player)
     {
         players.Remove(player);
+
+        if (players.Count == 0 && teamWipeSignal) teamWipeSignal.Raise();
     }
 
     public static HashSet<TeamPlayer> GetOverlapingSet (params Team[] teams)

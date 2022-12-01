@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class TouchscreenWheel : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    public InputController target;
+    public PlayerController target;
     public float rockAmount;
     public float smoothTime;
 

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Player Team
   m_EditorClassIdentifier: 
   id: Players
+  teamWipeSignal: {fileID: 11400000, guid: 5024e5eba6872034392ea3a41efd3fb3, type: 2}

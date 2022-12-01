@@ -195,7 +195,7 @@ MonoBehaviour:
   flavourTextSource: {fileID: 4900000, guid: e0135896414ae924fb3398205b76b546, type: 3}
   shakeStrength: 0
   shakeFrequency: 5
-  playerTeam: {fileID: 11400000, guid: 83e5339c04161844c8eeaad9014922ab, type: 2}
+  allPlayersDeadSignal: {fileID: 11400000, guid: 5024e5eba6872034392ea3a41efd3fb3, type: 2}
 --- !u!95 &3876860807149693356
 Animator:
   serializedVersion: 3
@@ -398,7 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textElement: {fileID: 5748895169454739471}
-  key: enemies_killed
+  key: tanksDestroyed
   textTemplate: 'Tanks Destroyed: {0:N0}'
 --- !u!1 &2568477429761445623
 GameObject:
@@ -755,7 +755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textElement: {fileID: 2978419981030034628}
-  key: damage_delt
+  key: damageDelt
   textTemplate: 'Damage Delt: {0:N0}'
 --- !u!1 &5715816167544445868
 GameObject:
@@ -1039,8 +1039,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textElement: {fileID: 8617962259856627024}
-  key: time_alive
-  textTemplate: 'Time Alive: {0}'
+  key: timeAlive
+  textTemplate: m\:ss
 --- !u!1 &5934588986229418021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1224,7 +1224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textElement: {fileID: 4733333915789837298}
-  key: shots_fired
+  key: shotsFired
   textTemplate: 'Shots Fired: {0:F0}'
 --- !u!1 &8976552288210159504
 GameObject:
