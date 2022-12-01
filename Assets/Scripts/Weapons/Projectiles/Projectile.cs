@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
     new Rigidbody2D rigidbody;
     Vector2 previousPosition;
 
-    public GameObject Shooter { get; set; }
+    public Health Shooter { get; set; }
 
     private void Awake()
     {
@@ -50,21 +50,23 @@ public class Projectile : MonoBehaviour
         float distance = vector.magnitude;
         Vector2 direction = vector / distance;
 
-        RaycastHit2D hit = Physics2D.CircleCast(point, projectileSize, direction, distance + 0.1f, collisionMask);
+        RaycastHit2D hit = Physics2D.CircleCast(point, projectileSize, direction, distance + 0.1f);
         if (hit)
         {
-            if (hit.rigidbody)
-            {
-                hit.rigidbody.velocity += direction * hitForce;
-            }
-
-            DamageArgs args = new DamageArgs(Shooter, damage);
+            DamageArgs args = new DamageArgs(Shooter ? Shooter.gameObject : null, damage);
             if (hit.transform.TryGetComponent(out Health health))
             {
+                if (health == Shooter) return;
+
                 if (damage > 0.001f)
                 {
                     health.Damage(args);
                 }
+            }
+
+            if (hit.rigidbody)
+            {
+                hit.rigidbody.velocity += direction * hitForce;
             }
 
             if (impactFX)

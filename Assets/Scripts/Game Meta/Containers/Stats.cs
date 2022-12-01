@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine.SceneManagement;
@@ -5,12 +6,11 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class Stats
 {
-    int tanksDestroyed;
-    float timeAlive;
-    int shotsFired;
-    float damageDelt;
-
-    public event System.Action ValueChangedEvent;
+    public Stat score = new Stat();
+    public Stat tanksDestroyed = new Stat();
+    public Stat timeAlive = new Stat();
+    public Stat shotsFired = new Stat();
+    public Stat damageDelt = new Stat();
 
     public static Stats _main;
     public static Stats Main
@@ -22,46 +22,6 @@ public class Stats
                 _main = new Stats();
             }
             return _main;
-        }
-    }
-
-    public int TanksDestroyed
-    {
-        get => tanksDestroyed;
-        set
-        {
-            tanksDestroyed = value;
-            ValueChangedEvent?.Invoke();
-        }
-    }
-
-    public float TimeAlive
-    {
-        get => timeAlive;
-        set
-        {
-            timeAlive = value;
-            ValueChangedEvent?.Invoke();
-        }
-    }
-
-    public int ShotsFired
-    {
-        get => shotsFired;
-        set
-        {
-            shotsFired = value;
-            ValueChangedEvent?.Invoke();
-        }
-    }
-
-    public float DamageDelt
-    {
-        get => damageDelt;
-        set
-        {
-            damageDelt = value;
-            ValueChangedEvent?.Invoke();
         }
     }
 
@@ -80,8 +40,39 @@ public class Stats
 
     private void Clear()
     {
-        tanksDestroyed = 0;
-        timeAlive = 0.0f;
-        shotsFired = 0;
+        var fields = typeof(Stats).GetFields();
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(Stat))
+            {
+                ((Stat)field.GetValue(this)).Clear();
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class Stat
+    {
+        float value;
+        public event Action ValueChangedEvent;
+
+        public float Value
+        {
+            get => value;
+            set
+            {
+                if (this.value.Equals(value)) return;
+
+                ValueChangedEvent?.Invoke();
+                this.value = value;
+            }
+        }
+
+        public void Clear()
+        {
+            value = default;
+        }
+
+        public override string ToString() => value.ToString();
     }
 }

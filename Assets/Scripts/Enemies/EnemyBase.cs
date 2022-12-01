@@ -7,9 +7,6 @@ public class EnemyBase : MonoBehaviour
 {
     const float pathfindingDelay = 1.0f;
 
-    public float spawnWeight = 1.0f;
-    public float minSpawnTime = 3.0f;
-
     [Space]
     public float pathCheckDistance;
 
@@ -33,8 +30,6 @@ public class EnemyBase : MonoBehaviour
     private float lastPathfindTime = float.MinValue;
     private List<Vector2> path = new List<Vector2>();
 
-    public float SpawnWeight => spawnWeight;
-    public float MinSpawnTime => minSpawnTime;
     public Vector2 ShootPoint { get => movement.ShootPoint; set => movement.ShootPoint = value; }
     public Vector2 MuzzleDirection => muzzle.right;
 

@@ -27,23 +27,24 @@ public class PlayerStatContributor : MonoBehaviour
 
     private void Update()
     {   
-        Stats.Main.TimeAlive = Time.time - startTime;
+        Stats.Main.timeAlive.Value = Time.time - startTime;
     }
 
     private void OnShootEvent()
     {
-        Stats.Main.ShotsFired++;
+        Stats.Main.shotsFired.Value++;
     }
 
     private void OnHitEvent(GameObject hitObject, DamageArgs args)
     {
-        Stats.Main.DamageDelt += args.damage;
+        Stats.Main.damageDelt.Value += args.damage;
 
         if (hitObject.TryGetComponent(out Health health))
         {
             if (health.currentHealth <= 0)
             {
-                Stats.Main.TanksDestroyed++;
+                Stats.Main.tanksDestroyed.Value++;
+                ScoreCalculator.CalculateScore(health);
             }
         }
     }

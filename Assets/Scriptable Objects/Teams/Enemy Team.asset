@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Enemy Team
   m_EditorClassIdentifier: 
   id: Enemies
+  memberDeadSignal: {fileID: 11400000, guid: f8665b8a230226f4f9bd56d19e6f9794, type: 2}
+  teamWipeSignal: {fileID: 0}

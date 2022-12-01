@@ -5,88 +5,61 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public Spawner spawnerPrefab;
-    public List<EnemyBase> enemies;
+    public List<WeightedElement<EnemyBase>> enemies;
     public float spawnRange;
     public float spawnCheckRange;
-    public int maxEnemies;
 
     [Space]
-    public float spawnA;
-    public float spawnB;
-    public float spawnC;
+    public int minEnemies;
+    public float spawnPreDelay;
+    public float spawnCountScalar;
+    public float spawnCountOffset;
 
     [Space]
-    public List<GameObject> preSpawnEnemies;
+    public Team enemyTeam;
+    public Signal enemyDiedEvent;
 
     float gameDuration;
     float nextSpawnTime;
 
     bool killedDummyTanks = false;
+    bool spawningNewWave;
 
-    public float SpawnDelay => Mathf.Exp(spawnB - gameDuration / spawnA) + spawnC;
-
-    private void Update()
+    private void OnEnable()
     {
-        if (!killedDummyTanks)
-        {
-            foreach (var enemy in preSpawnEnemies)
-            {
-                if (enemy.activeSelf)
-                {
-                    return;
-                }
-            }
-
-            killedDummyTanks = true;
-        }
-
-        if (Time.time > nextSpawnTime)
-        {
-            EnemyBase enemy = GetRandomWeightedEnemy();
-            Vector2 spawnLocation = Util.GetSpawnLocation(spawnRange, spawnCheckRange);
-
-            if (enemy != null)
-            {
-                if (EnemyBase.Enemies.Count < maxEnemies)
-                {
-                    Spawner spawnerInstance = Instantiate(spawnerPrefab, spawnLocation, Quaternion.identity);
-                    spawnerInstance.spawnObject = enemy.gameObject;
-                }
-
-                nextSpawnTime = Time.time + SpawnDelay;
-            }
-        }
-
-        gameDuration += Time.deltaTime;
+        enemyDiedEvent.OnRaise += TrySpawnWave;
     }
 
-    private EnemyBase GetRandomWeightedEnemy()
+    private void OnDisable()
     {
-        float totalWeight = 0.0f;
-        List<EnemyBase> validEnemies = new List<EnemyBase>();
-        foreach (var enemy in enemies)
+        enemyDiedEvent.OnRaise -= TrySpawnWave;
+    }
+
+    private void TrySpawnWave()
+    {
+        StartCoroutine(TrySpawnWaveRoutine());
+    }
+
+    private IEnumerator TrySpawnWaveRoutine()
+    {
+        if (spawningNewWave) yield break;
+
+        print(enemyTeam.players.Count);
+        if (enemyTeam.players.Count >= minEnemies) yield break;
+
+        spawningNewWave = true;
+
+        yield return new WaitForSeconds(spawnPreDelay);
+
+        int enemiesToSpawn = (int)(Time.time * spawnCountScalar + spawnCountOffset);
+        for (int i = 0; i < enemiesToSpawn; i++)
         {
-            if (gameDuration > enemy.MinSpawnTime)
-            {
-                validEnemies.Add(enemy);
-                totalWeight += enemy.SpawnWeight;
-            }
+            Vector2 spawnLocation = Util.GetSpawnLocation(spawnRange, spawnCheckRange);
+            var spawner = Instantiate(spawnerPrefab, spawnLocation, Quaternion.identity);
+            spawner.spawnObject = enemies.Evaluate().gameObject;
         }
 
-        if (validEnemies.Count == 0) return null;
-
-        float targetWeight = Random.Range(0.0f, totalWeight);
-        float countingWeight = 0.0f;
-        foreach (var enemy in validEnemies)
-        {
-            countingWeight += enemy.SpawnWeight;
-
-            if (targetWeight < countingWeight)
-            {
-                return enemy;
-            }
-        }
-        return validEnemies[validEnemies.Count - 1];
+        spawningNewWave = false;
     }
 
     private void OnDrawGizmosSelected()

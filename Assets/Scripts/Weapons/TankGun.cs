@@ -30,6 +30,11 @@ public class TankGun : MonoBehaviour, IAttack
     public float NextFireTime => nextFireTime;
     public float Cooldown => 1.0f - Mathf.Clamp01((nextFireTime - Time.time) / fireDelay);
 
+    private void OnEnable()
+    {
+        nextFireTime = Time.time + fireDelay;
+    }
+
     private void Update()
     {
         if (Time.time < nextFireTime) return;
@@ -39,7 +44,7 @@ public class TankGun : MonoBehaviour, IAttack
         if (projectileObject.TryGetComponent(out Projectile projectile))
         {
             projectile.hitEvent.AddListener(OnHitEvent);
-            projectile.Shooter = transform.root.gameObject;
+            projectile.Shooter = transform.GetComponentInParent<Health>();
         }
 
         nextFireTime = Time.time + fireDelay;

@@ -9,23 +9,24 @@ public class StatDisplay : MonoBehaviour
     public string key;
     public string textTemplate;
 
+    Stats.Stat stat;
+
     private void OnEnable()
     {
-        Stats.Main.ValueChangedEvent += OnValueChangedEvent;
+        stat = typeof(Stats).GetField(key, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase).GetValue(Stats.Main) as Stats.Stat;
+        stat.ValueChangedEvent += OnValueChangedEvent;
 
         OnValueChangedEvent();
     }
 
     private void OnDisable()
     {
-        Stats.Main.ValueChangedEvent -= OnValueChangedEvent;
+        stat.ValueChangedEvent -= OnValueChangedEvent;
     }
 
     private void OnValueChangedEvent()
     {
-        object val = typeof(Stats).GetField(key, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.IgnoreCase).GetValue(Stats.Main);
-
-        textElement.text = Format(val);
+        textElement.text = Format(stat);
     }
 
     protected virtual string Format (object value)

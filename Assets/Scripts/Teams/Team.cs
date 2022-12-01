@@ -6,6 +6,7 @@ using UnityEngine;
 public class Team : ScriptableObject
 {
     public string id;
+    public Signal memberDeadSignal;
     public Signal teamWipeSignal;
 
     public HashSet<TeamPlayer> players = new HashSet<TeamPlayer>();
@@ -49,6 +50,7 @@ public class Team : ScriptableObject
     public void Deregister (TeamPlayer player)
     {
         players.Remove(player);
+        if (memberDeadSignal) memberDeadSignal.Raise();
 
         if (players.Count == 0 && teamWipeSignal) teamWipeSignal.Raise();
     }

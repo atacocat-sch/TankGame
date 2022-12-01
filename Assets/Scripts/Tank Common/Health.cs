@@ -16,6 +16,9 @@ public class Health : MonoBehaviour
     public GameObject damagePrefab;
     public GameObject deathPrefab;
 
+    [Space]
+    [SerializeField] bool destroyOnDeath;
+
     float lastDamageTime;
 
     public event System.Action<DamageArgs> DamageEvent;
@@ -73,7 +76,8 @@ public class Health : MonoBehaviour
 
         DeathEvent?.Invoke(args);
 
-        gameObject.SetActive(false);
+        if (destroyOnDeath) Destroy(gameObject);
+        else gameObject.SetActive(false);
     }
 
     public void Regen (DamageArgs args)
