@@ -8,6 +8,8 @@ using UnityEngine;
 [System.Serializable]
 public class Save : IDisposable
 {
+    public int maxScore;
+    public int lastMaxScore;
     public int maxTanksDead;
     public float maxTimeAlive;
 

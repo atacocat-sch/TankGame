@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
 
         using (var save = Save.Get())
         {
+            save.lastMaxScore = save.maxScore;
+            save.maxScore = Mathf.Max(save.maxScore, (int)Stats.Main.score.Value);
             save.maxTanksDead = Mathf.Max(save.maxTanksDead, (int)Stats.Main.tanksDestroyed.Value);
             save.maxTimeAlive = Mathf.Max(save.maxTimeAlive, Stats.Main.timeAlive.Value);
         }
