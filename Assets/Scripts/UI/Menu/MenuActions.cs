@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MenuActions : MonoBehaviour
 {
-    public int gameLevelBuildIndex;
-
     [Space]
     public Transform menuContainer;
 
@@ -20,12 +18,12 @@ public class MenuActions : MonoBehaviour
         LoadingIcon.SetActive(false);
     }
 
-    public void LoadGame()
+    public void LoadLevel(string name)
     {
         if (loadingGameScene) return;
         loadingGameScene = true;
 
-        SceneManager.LoadSceneAsync(gameLevelBuildIndex);
+        SceneManager.LoadSceneAsync(name);
         LoadingIcon.SetActive(true);
     }
 

@@ -84,7 +84,7 @@ public class EndScreen : MonoBehaviour
         {
             callback(prefix + i.ToString());
 
-            yield return new WaitForSeconds(characterTime);
+            yield return new WaitForSeconds(Mathf.Pow(1.05f, -i) * characterTime);
         }
 
         callback(prefix + target.ToString());

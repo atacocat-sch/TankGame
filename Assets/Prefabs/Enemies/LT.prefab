@@ -11099,7 +11099,7 @@ MonoBehaviour:
   aimTime: 2
   fireTime: 0.2
   windDown: 5
-  tickDamage: 15
+  tickDamage: 35
   tickFrequency: 50
   aimLineAngle:
     serializedVersion: 2
@@ -11144,8 +11144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4ce4ba7783a4c4d8c8110dbd196f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnWeight: 20
-  minSpawnTime: 20
   pathCheckDistance: 2
   angleScale: 0.05
   attackEvents:

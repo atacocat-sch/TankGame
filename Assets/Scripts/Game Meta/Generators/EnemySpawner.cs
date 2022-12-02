@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Space]
     public int minEnemies;
+    public int maxEnemies;
     public float spawnPreDelay;
     public float spawnCountScalar;
     public float spawnCountOffset;
@@ -25,6 +26,8 @@ public class EnemySpawner : MonoBehaviour
     bool killedDummyTanks = false;
     bool spawningNewWave;
 
+    float time;
+
     private void OnEnable()
     {
         enemyDiedEvent.OnRaise += TrySpawnWave;
@@ -33,6 +36,11 @@ public class EnemySpawner : MonoBehaviour
     private void OnDisable()
     {
         enemyDiedEvent.OnRaise -= TrySpawnWave;
+    }
+
+    private void Update()
+    {
+        time += Time.deltaTime;
     }
 
     private void TrySpawnWave()
@@ -51,12 +59,14 @@ public class EnemySpawner : MonoBehaviour
 
         yield return new WaitForSeconds(spawnPreDelay);
 
-        int enemiesToSpawn = (int)(Time.time * spawnCountScalar + spawnCountOffset);
+        int enemiesToSpawn = Mathf.Min((int)(time * spawnCountScalar + spawnCountOffset), maxEnemies);
         for (int i = 0; i < enemiesToSpawn; i++)
         {
             Vector2 spawnLocation = Util.GetSpawnLocation(spawnRange, spawnCheckRange);
             var spawner = Instantiate(spawnerPrefab, spawnLocation, Quaternion.identity);
             spawner.spawnObject = enemies.Evaluate().gameObject;
+
+            yield return new WaitForSeconds(1.0f);
         }
 
         spawningNewWave = false;

@@ -32,7 +32,7 @@ public class TankGun : MonoBehaviour, IAttack
 
     private void OnEnable()
     {
-        nextFireTime = Time.time + fireDelay;
+        //nextFireTime = Time.time + fireDelay;
     }
 
     private void Update()
